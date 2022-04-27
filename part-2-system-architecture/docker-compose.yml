@@ -1,0 +1,9 @@
+
+services:
+  nginx:
+    build:
+      context: .
+    ports:
+      - 8000:80
+    volumes:
+      - ./html/:/usr/share/nginx/html/
