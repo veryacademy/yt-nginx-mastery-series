@@ -20,7 +20,7 @@ services:
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - static_files:/home/app/staticfiles
-      - ./nginx/secret/:/home/secret/
+      - ./nginx/secure/:/home/secure/
 
   dns:
     build:
