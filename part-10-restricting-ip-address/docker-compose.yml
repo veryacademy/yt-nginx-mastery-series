@@ -1,0 +1,38 @@
+services:
+
+  web:
+    build:
+      context: ./django/
+    command: gunicorn demo.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./django/:/usr/src/app/
+      - static_files:/usr/src/app/staticfiles
+    expose:
+     - 8000
+    env_file:
+      - ./.env/dev.env
+
+  nginx:
+    build:
+      context: ./nginx/
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - static_files:/home/app/staticfiles
+
+  dns:
+    build:
+      context: ./dns/
+    restart: always
+    ports:
+      - 53:53
+      - 53:53/udp
+    volumes:
+      - ./dns/named.conf:/etc/bind/named.conf
+      - ./dns/zone/:/etc/bind/zone/
+    command: named -c /etc/bind/named.conf -g -u named
+
+volumes:
+  static_files:
+
